@@ -1,0 +1,32 @@
+services:
+    express-api-backend:
+        image: node:lts
+        working_dir: /app
+        entrypoint: ["/bin/bash", "/app/bash/node-entrypoint.sh"]
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./:/app
+        networks:
+            - app-network
+        environment:
+            - PROD_PREVIEW=${PROD_PREVIEW}
+        depends_on:
+            - express-api-mongodb
+
+    express-api-mongodb:
+        image: mongo:latest
+        ports:
+            - "27017:27017"
+        volumes:
+            - mongo-volume:/data/db
+            - ./logs:/logs
+        networks:
+            - app-network
+        command: --quiet --logappend --logpath "/logs/mongo.log"
+
+volumes:
+    mongo-volume:
+
+networks:
+    app-network:

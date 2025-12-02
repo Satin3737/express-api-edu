@@ -1,8 +1,9 @@
 import {z} from 'zod';
 
-export const createPostSchema = z.object({
-    body: z.object({
-        _id: z.string().optional(),
+export const idSchema = z.string('Post ID must be a string').trim().min(1, 'Post ID is required');
+
+export const postSchema = z
+    .object({
         title: z
             .string('Title must be a string')
             .trim()
@@ -20,13 +21,26 @@ export const createPostSchema = z.object({
             .min(3, 'Author name must be at least 3 characters long')
             .max(50, 'Author name must be at most 50 characters long')
     })
+    .strict();
+
+export const createPostSchema = z.object({
+    body: postSchema
 });
 
 export type ICreatePost = z.infer<typeof createPostSchema>;
 
+export const updatePostSchema = z.object({
+    body: postSchema.partial(),
+    params: z.object({
+        id: idSchema
+    })
+});
+
+export type IUpdatePost = z.infer<typeof updatePostSchema>;
+
 export const deletePostSchema = z.object({
     params: z.object({
-        id: z.string('Post ID must be a string').trim().min(1, 'Post ID is required')
+        id: idSchema
     })
 });
 

@@ -4,7 +4,7 @@ import {Post} from '@/models';
 
 const getPosts: RequestHandler = async (_, res) => {
     try {
-        const posts = await Post.find();
+        const posts = await Post.find().lean();
 
         return res.status(200).json({
             message: 'Posts retrieved successfully',

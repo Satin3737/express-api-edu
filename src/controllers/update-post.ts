@@ -1,14 +1,15 @@
 import type {RequestHandler} from 'express';
 import {Logger} from '@/services';
-import type {ICreatePost} from '@/schemas';
+import type {IUpdatePost} from '@/schemas';
 import {Post} from '@/models';
 
-const createPost: RequestHandler<unknown, unknown, ICreatePost['body']> = async (req, res) => {
+const updatePost: RequestHandler<IUpdatePost['params'], unknown, IUpdatePost['body']> = async (req, res) => {
     try {
-        const post = await new Post(req.body).save();
+        const {id} = req.params;
+        const post = await Post.findByIdAndUpdate(id, req.body, {new: true}).lean();
 
         return res.status(201).json({
-            message: 'Post created successfully',
+            message: 'Post updated successfully',
             post
         });
     } catch (error) {
@@ -17,4 +18,4 @@ const createPost: RequestHandler<unknown, unknown, ICreatePost['body']> = async 
     }
 };
 
-export default createPost;
+export default updatePost;

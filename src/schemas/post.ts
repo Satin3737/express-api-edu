@@ -23,3 +23,11 @@ export const createPostSchema = z.object({
 });
 
 export type ICreatePost = z.infer<typeof createPostSchema>;
+
+export const deletePostSchema = z.object({
+    params: z.object({
+        id: z.string('Post ID must be a string').trim().min(1, 'Post ID is required')
+    })
+});
+
+export type IDeletePost = z.infer<typeof deletePostSchema>;

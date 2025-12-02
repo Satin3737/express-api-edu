@@ -5,8 +5,7 @@ import {Post} from '@/models';
 
 const deletePost: RequestHandler<IDeletePost['params']> = async (req, res) => {
     try {
-        const {id} = req.params;
-        await Post.findByIdAndDelete(id);
+        await Post.findByIdAndDelete(req.params.id);
 
         return res.status(200).json({
             message: 'Post deleted successfully'

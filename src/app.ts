@@ -4,7 +4,7 @@ import pinoHttp from 'pino-http';
 import initializeMongoServer from '@/database/db';
 import {Port} from '@/const';
 import {Logger} from '@/services';
-import {postsRouter} from '@/routes';
+import {notFoundRouter, postsRouter} from '@/routes';
 
 const app = express();
 
@@ -17,7 +17,7 @@ const middlewares = [
     pinoHttp({logger: Logger.instance, autoLogging: false})
 ];
 
-const routes = [postsRouter];
+const routes = [postsRouter, notFoundRouter];
 
 app.use([...middlewares, ...routes]);
 

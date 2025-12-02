@@ -2,7 +2,7 @@ import {Router} from 'express';
 import {Routes} from '@/interfaces';
 import {validate} from '@/middlewares';
 import {createPostSchema, deletePostSchema, getPostSchema, updatePostSchema} from '@/schemas';
-import {createPost, deletePost, getPost, getPosts, updatePost} from '@/controllers';
+import {createPost, deletePost, getPost, getPosts, updatePost} from '@/controllers/posts';
 
 const postsRouter = Router();
 

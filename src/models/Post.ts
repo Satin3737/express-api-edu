@@ -18,6 +18,7 @@ const postSchema = new Schema<IPost>(
         author: {type: String, required: true}
     },
     {
+        versionKey: false,
         timestamps: true
     }
 );

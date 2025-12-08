@@ -2,9 +2,10 @@ import cors from 'cors';
 import express from 'express';
 import pinoHttp from 'pino-http';
 import initializeMongoServer from '@/database/db';
-import {Port} from '@/const';
+import {ImagesDir, ImagesStorageDir, MaxBodySize, Port} from '@/const';
 import {Logger} from '@/services';
 import {notFoundRouter, postsRouter} from '@/routes';
+import {bodyToLarge} from '@/middlewares';
 
 const app = express();
 
@@ -12,13 +13,15 @@ app.set('title', 'ExpressApi');
 
 const middlewares = [
     cors(),
-    express.json(),
     express.urlencoded({extended: true}),
+    express.json({limit: MaxBodySize}),
+    bodyToLarge,
     pinoHttp({logger: Logger.instance, autoLogging: false})
 ];
 
 const routes = [postsRouter, notFoundRouter];
 
+app.use(`/${ImagesDir}`, express.static(ImagesStorageDir));
 app.use([...middlewares, ...routes]);
 
 try {

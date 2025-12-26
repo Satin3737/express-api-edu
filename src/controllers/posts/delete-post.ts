@@ -14,7 +14,7 @@ const deletePost: RequestHandler<IDeletePost['params']> = async (req, res) => {
             message: 'Post deleted successfully'
         });
     } catch (error) {
-        Logger.error(error, 'Error creating post');
+        Logger.error(error, 'Error deleting post');
         return res.status(500).json({message: 'Internal Server Error', error});
     }
 };

@@ -1,7 +1,7 @@
 import cors from 'cors';
 import express from 'express';
 import pinoHttp from 'pino-http';
-import initializeMongoServer from '@/database/db';
+import {connectToMongoServer} from '@/database/db';
 import {ImagesDir, ImagesStorageDir, MaxBodySize, Port} from '@/const';
 import {Logger} from '@/services';
 import {notFoundRouter, postsRouter} from '@/routes';
@@ -25,7 +25,7 @@ app.use(`/${ImagesDir}`, express.static(ImagesStorageDir));
 app.use([...middlewares, ...routes]);
 
 try {
-    await initializeMongoServer();
+    await connectToMongoServer();
     app.listen(Port, () => Logger.info(`Server running on http://localhost:${Port}`));
 } catch (error) {
     Logger.error(error, 'Failed to start server');

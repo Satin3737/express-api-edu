@@ -12,7 +12,7 @@ if (!database || !host || !port) {
 
 export const MongoUrl = `mongodb://${host}:${port}/${database}`;
 
-const initializeMongoServer = async () => {
+export const connectToMongoServer = async () => {
     try {
         Logger.info('Connecting to MongoDB...');
         await mongoose.connect(MongoUrl);
@@ -22,4 +22,12 @@ const initializeMongoServer = async () => {
     }
 };
 
-export default initializeMongoServer;
+export const disconnectFromMongoServer = async () => {
+    try {
+        Logger.info('Disconnecting from MongoDB...');
+        await mongoose.disconnect();
+    } catch (error) {
+        Logger.error(error, 'Error disconnecting from MongoDB');
+        throw error;
+    }
+};

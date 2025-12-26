@@ -1,6 +1,7 @@
 #!/bin/sh
 
 npm install
+npm run migrate
 
 if [ "$PROD_PREVIEW" = 1 ]; then
   npm run build

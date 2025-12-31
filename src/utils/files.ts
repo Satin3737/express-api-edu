@@ -1,29 +1,18 @@
 import fs from 'fs';
-import path from 'path';
-import {BaseUrlWithPort, ImagesDir, ImagesStorageDir} from '@/const';
 import {Logger} from '@/services';
 
-export const saveBase64Image = async (base64: string, imageName: string): Promise<string> => {
+export const fileExists = async (filePath: string) => {
     try {
-        const base64Data = base64.replace(/^data:image\/\w+;base64,/, '');
-        const buffer = Buffer.from(base64Data, 'base64');
-        const name = `post_${imageName}.png`;
-
-        const filePath = path.join(ImagesStorageDir, name);
-        await fs.promises.writeFile(filePath, buffer);
-
-        return `${BaseUrlWithPort}/${ImagesDir}/${name}`;
+        await fs.promises.access(filePath, fs.constants.F_OK);
+        return true;
     } catch (error) {
-        Logger.error(error, 'Error saving image file');
-        throw error;
+        Logger.error(error, 'File does not exist');
+        return false;
     }
 };
 
-export const deleteImage = async (postId: string): Promise<void> => {
+export const deleteFile = async (filePath: string): Promise<void> => {
     try {
-        const imagePath = path.join(ImagesStorageDir, `post_${postId}.png`);
-        const filePath = path.join(imagePath);
-
         await fs.promises.unlink(filePath);
     } catch (error) {
         Logger.error(error, 'Error deleting image file');

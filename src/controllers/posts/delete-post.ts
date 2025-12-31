@@ -1,18 +1,21 @@
 import type {RequestHandler} from 'express';
-import {deleteImage} from '@/utils';
+import path from 'path';
+import {ImagesStorageDir} from '@/const';
+import {deleteFile} from '@/utils';
 import {Logger} from '@/services';
-import type {IDeletePost} from '@/schemas';
+import type {IIdParams} from '@/schemas';
 import {Post} from '@/models';
 
-const deletePost: RequestHandler<IDeletePost['params']> = async (req, res) => {
+const deletePost: RequestHandler<IIdParams['params']> = async (req, res) => {
     try {
         const {id} = req.params;
-        await Post.findByIdAndDelete(id);
-        await deleteImage(id);
+        const post = await Post.findByIdAndDelete(id);
+        if (!post) return res.status(404).json({message: 'Post not found'});
 
-        return res.status(200).json({
-            message: 'Post deleted successfully'
-        });
+        const imageName = post.image.split('/').pop();
+        if (imageName) await deleteFile(path.join(ImagesStorageDir, imageName));
+
+        return res.status(200).json({message: 'Post deleted successfully'});
     } catch (error) {
         Logger.error(error, 'Error deleting post');
         return res.status(500).json({message: 'Internal Server Error', error});

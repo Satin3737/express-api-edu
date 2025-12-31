@@ -1,12 +1,5 @@
 import {z} from 'zod';
-
-const idSchema = z.string('Post ID must be a string').trim().min(1, 'Post ID is required');
-
-const postParamsSchema = z.object({
-    params: z.object({
-        id: idSchema
-    })
-});
+import {idParamsSchema} from '@/schemas';
 
 const postBodySchema = z.object({
     body: z
@@ -21,7 +14,7 @@ const postBodySchema = z.object({
                 .trim()
                 .min(10, 'Description must be at least 10 characters long')
                 .max(1000, 'Description must be at most 1000 characters long'),
-            image: z.string('Image must be a base64 encoded string').trim().min(1, 'Image is required'),
+            image: z.url('Image must be a valid URL'),
             author: z
                 .string('Author name must be a string')
                 .trim()
@@ -34,14 +27,9 @@ const postBodySchema = z.object({
 export const createPostSchema = postBodySchema;
 export type ICreatePost = z.infer<typeof createPostSchema>;
 
-export const getPostSchema = postParamsSchema;
-export type IGetPost = z.infer<typeof getPostSchema>;
-
 export const updatePostSchema = z.object({
     body: postBodySchema.shape.body.partial(),
-    ...postParamsSchema.shape
+    ...idParamsSchema.shape
 });
-export type IUpdatePost = z.infer<typeof updatePostSchema>;
 
-export const deletePostSchema = postParamsSchema;
-export type IDeletePost = z.infer<typeof deletePostSchema>;
+export type IUpdatePost = z.infer<typeof updatePostSchema>;

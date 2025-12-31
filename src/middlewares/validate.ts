@@ -1,9 +1,8 @@
 import type {RequestHandler} from 'express';
 import {type ZodObject, z} from 'zod';
 
-const validate =
-    (schema: ZodObject): RequestHandler =>
-    (req, res, next) => {
+const validate = (schema: ZodObject): RequestHandler => {
+    return (req, res, next) => {
         try {
             const {success, error} = schema.safeParse({
                 body: req.body,
@@ -23,5 +22,6 @@ const validate =
             return res.status(500).json({message: 'Internal Server Error', error});
         }
     };
+};
 
 export default validate;

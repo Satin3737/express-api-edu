@@ -1,13 +1,11 @@
 import {Document, Schema, model} from 'mongoose';
-import {Models} from '@/interfaces';
+import {type IModelTimestamps, Models} from '@/interfaces';
 
-export interface IPost extends Document<Schema.Types.ObjectId> {
+export interface IPost extends Document<Schema.Types.ObjectId>, IModelTimestamps {
     title: string;
     description: string;
     image: string;
     author: string;
-    createdAt: Date;
-    updatedAt: Date;
 }
 
 const postSchema = new Schema<IPost>(

@@ -15,3 +15,7 @@ export const BaseUrlWithPort = `${BaseUrl}:${Port}`;
 
 export const MaxUploadSize = 5 * 1024 * 1024;
 export const MaxBodySize = 1024 * 1024 + MaxUploadSize;
+
+export const PaginationPageDefault = 1;
+export const PaginationLimitDefault = 10;
+export const PaginationLimitMax = 100;

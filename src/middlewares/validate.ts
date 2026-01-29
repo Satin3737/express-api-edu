@@ -2,9 +2,9 @@ import type {RequestHandler} from 'express';
 import {type ZodObject, z} from 'zod';
 
 const validate = (schema: ZodObject): RequestHandler => {
-    return (req, res, next) => {
+    return async (req, res, next) => {
         try {
-            const {success, error} = schema.safeParse({
+            const {success, error} = await schema.safeParseAsync({
                 body: req.body,
                 query: req.query,
                 params: req.params

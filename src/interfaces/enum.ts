@@ -1,6 +1,8 @@
 import type {IValueOf} from '@/interfaces';
 
 export const Routes = {
+    register: '/auth/register',
+    login: '/auth/login',
     posts: '/posts',
     post: '/post',
     postById: '/post/:id',
@@ -11,6 +13,7 @@ export const Routes = {
 export type IRoute = IValueOf<typeof Routes>;
 
 export const Models = {
+    user: 'User',
     post: 'Post',
     postImage: 'PostImage'
 } as const;

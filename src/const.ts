@@ -19,3 +19,7 @@ export const MaxBodySize = 1024 * 1024 + MaxUploadSize;
 export const PaginationPageDefault = 1;
 export const PaginationLimitDefault = 10;
 export const PaginationLimitMax = 100;
+
+export const bcryptSalt = 12;
+export const JwtSecret = process.env.JWT_SECRET || 'secret';
+export const JwtExpiresIn = Number(process.env.JWT_EXPIRES_IN) || 60 * 1000;

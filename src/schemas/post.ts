@@ -14,12 +14,7 @@ const postBodySchema = z.object({
                 .trim()
                 .min(10, 'Description must be at least 10 characters long')
                 .max(1000, 'Description must be at most 1000 characters long'),
-            image: z.url('Image must be a valid URL'),
-            author: z
-                .string('Author name must be a string')
-                .trim()
-                .min(3, 'Author name must be at least 3 characters long')
-                .max(50, 'Author name must be at most 50 characters long')
+            image: z.url('Image must be a valid URL')
         })
         .strict()
 });

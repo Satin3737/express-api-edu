@@ -8,6 +8,8 @@
         "dev": "tsx watch -r tsconfig-paths/register --env-file=.env src/app.ts",
         "lint": "npx eslint .",
         "migrate": "npx migrate up",
+        "rollback": "npx migrate down ${name}",
+        "new-migration": "npx migrate create ${name}",
         "start": "node dist/app.js",
         "build": "npm run lint && tsx esbuild.config.ts"
     },

@@ -4,13 +4,16 @@ import {ImagesStorageDir} from '@/const';
 import {deleteFile} from '@/utils';
 import {Logger} from '@/services';
 import type {IIdParams} from '@/schemas';
-import {Post} from '@/models';
+import {Post, User} from '@/models';
 
 const deletePost: RequestHandler<IIdParams['params']> = async (req, res) => {
     try {
         const {id} = req.params;
+
         const post = await Post.findByIdAndDelete(id);
         if (!post) return res.status(404).json({message: 'Post not found'});
+
+        await User.findByIdAndUpdate(post.author, {$pull: {posts: post._id}});
 
         const imageName = post.image.split('/').pop();
         if (imageName) await deleteFile(path.join(ImagesStorageDir, imageName));

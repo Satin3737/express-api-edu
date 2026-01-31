@@ -1,5 +1,4 @@
 import {z} from 'zod';
-import {idParamsSchema} from '@/schemas';
 import {User} from '@/models';
 
 const passwordSchema = z
@@ -44,10 +43,3 @@ export const loginUserSchema = z.object({
 });
 
 export type ILoginUser = z.infer<typeof loginUserSchema>;
-
-export const updateUserSchema = z.object({
-    body: bodySchema.partial(),
-    ...idParamsSchema.shape
-});
-
-export type IUpdateUser = z.infer<typeof updateUserSchema>;

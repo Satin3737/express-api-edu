@@ -10,6 +10,7 @@ const getPosts: RequestHandler<unknown, unknown, unknown, IPaginationQueries['qu
         const total = await Post.countDocuments();
 
         const posts = await Post.find()
+            .sort({createdAt: -1})
             .skip((page - 1) * limit)
             .limit(limit)
             .lean();

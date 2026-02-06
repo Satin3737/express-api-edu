@@ -1,7 +1,5 @@
 import type {RequestHandler} from 'express';
-import path from 'path';
-import {ImagesStorageDir} from '@/const';
-import {deleteFile} from '@/utils';
+import {deleteFile, getImagePath} from '@/utils';
 import {Logger} from '@/services';
 import type {IIdParams} from '@/schemas';
 import {Post, User} from '@/models';
@@ -10,13 +8,13 @@ const deletePost: RequestHandler<IIdParams['params']> = async (req, res) => {
     try {
         const {id} = req.params;
 
-        const post = await Post.findByIdAndDelete(id);
+        const post = await Post.findById(id);
         if (!post) return res.status(404).json({message: 'Post not found'});
+        if (post.author.toString() !== req.userId) return res.status(403).json({message: 'Forbidden'});
 
+        await Post.findByIdAndDelete(id);
         await User.findByIdAndUpdate(post.author, {$pull: {posts: post._id}});
-
-        const imageName = post.image.split('/').pop();
-        if (imageName) await deleteFile(path.join(ImagesStorageDir, imageName));
+        await deleteFile(getImagePath(post.image));
 
         return res.status(200).json({message: 'Post deleted successfully'});
     } catch (error) {

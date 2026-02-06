@@ -1,15 +1,7 @@
 import fs from 'fs';
+import path from 'path';
+import {ImagesStorageDir} from '@/const';
 import {Logger} from '@/services';
-
-export const fileExists = async (filePath: string) => {
-    try {
-        await fs.promises.access(filePath, fs.constants.F_OK);
-        return true;
-    } catch (error) {
-        Logger.error(error, 'File does not exist');
-        return false;
-    }
-};
 
 export const deleteFile = async (filePath: string): Promise<void> => {
     try {
@@ -18,4 +10,8 @@ export const deleteFile = async (filePath: string): Promise<void> => {
         Logger.error(error, 'Error deleting image file');
         throw error;
     }
+};
+
+export const getImagePath = (imageUrl: string): string => {
+    return path.join(ImagesStorageDir, path.basename(imageUrl));
 };

@@ -4,10 +4,10 @@ import jwt from 'jsonwebtoken';
 import type {IJwtPayload} from '@/interfaces';
 import {JwtExpiresIn, JwtSecret} from '@/const';
 import {Logger} from '@/services';
-import type {ICreateUser} from '@/schemas';
+import type {ILoginUser} from '@/schemas';
 import {User} from '@/models';
 
-const loginUser: RequestHandler<ICreateUser['body']> = async (req, res) => {
+const loginUser: RequestHandler<unknown, unknown, ILoginUser['body']> = async (req, res) => {
     try {
         const {email, password} = req.body;
 
@@ -20,9 +20,9 @@ const loginUser: RequestHandler<ICreateUser['body']> = async (req, res) => {
         const payload: IJwtPayload = {email, userId: user._id.toString()};
         const token = jwt.sign(payload, JwtSecret, {expiresIn: JwtExpiresIn});
 
-        return res.status(201).json({message: 'User logged in successfully', userId: user._id, token});
+        return res.status(200).json({message: 'User logged in successfully', userId: user._id, token});
     } catch (error) {
-        Logger.error(error, 'Error registering user');
+        Logger.error(error, 'Error logging in user');
         return res.status(500).json({message: 'Internal Server Error', error});
     }
 };

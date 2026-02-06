@@ -7,7 +7,7 @@ const notFound: RequestHandler = async (_, res) => {
             message: 'Resource not found'
         });
     } catch (error) {
-        Logger.error(error, 'Error getting posts');
+        Logger.error(error, 'Error handling not found');
         return res.status(500).json({message: 'Internal Server Error', error});
     }
 };

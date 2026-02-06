@@ -1,5 +1,5 @@
 import {z} from 'zod';
-import {User} from '@/models';
+import {isEmailUnique} from '@/utils';
 
 const passwordSchema = z
     .string('Password must be a string')
@@ -22,16 +22,10 @@ const userBodySchema = z.object({
             error: 'Passwords do not match',
             path: ['confirmPassword']
         })
-        .refine(
-            async ({email}) => {
-                const withSameEmail = await User.find({email});
-                return !withSameEmail.length;
-            },
-            {
-                error: 'Email is already in use',
-                path: ['email']
-            }
-        )
+        .refine(async ({email}) => isEmailUnique(email), {
+            error: 'Email is already in use',
+            path: ['email']
+        })
         .strict()
 });
 
@@ -43,3 +37,15 @@ export const loginUserSchema = z.object({
 });
 
 export type ILoginUser = z.infer<typeof loginUserSchema>;
+
+export const updateUserSchema = z.object({
+    body: bodySchema
+        .pick({email: true, name: true, surname: true})
+        .partial()
+        .refine(async ({email}) => isEmailUnique(email), {
+            error: 'Email is already in use',
+            path: ['email']
+        })
+});
+
+export type IUpdateUser = z.infer<typeof updateUserSchema>;

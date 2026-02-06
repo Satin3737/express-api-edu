@@ -4,7 +4,7 @@ import pinoHttp from 'pino-http';
 import {connectToMongoServer} from '@/database/db';
 import {ImagesDir, ImagesStorageDir, Port} from '@/const';
 import {Logger} from '@/services';
-import {authRouter, notFoundRouter, postImagesRouter, postsRouter} from '@/routes';
+import {authRouter, notFoundRouter, postImagesRouter, postsRouter, userRouter} from '@/routes';
 import {bodyToLarge, isAuth} from '@/middlewares';
 
 const app = express();
@@ -19,7 +19,7 @@ const middlewares = [
     bodyToLarge
 ];
 
-const routes = [postsRouter, postImagesRouter, notFoundRouter];
+const routes = [userRouter, postsRouter, postImagesRouter, notFoundRouter];
 
 app.use(middlewares);
 app.use(`/${ImagesDir}`, express.static(ImagesStorageDir));

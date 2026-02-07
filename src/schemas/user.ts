@@ -8,13 +8,15 @@ const passwordSchema = z
     .max(18, 'Password must be at most 18 characters long')
     .nonempty('Password is required');
 
-const bodySchema = z.object({
-    email: z.email('Invalid email address').trim(),
-    name: z.string('Name must be a string').trim().nonempty('Name is required'),
-    surname: z.string('Surname must be a string').trim().nonempty('Surname is required'),
-    password: passwordSchema,
-    confirmPassword: passwordSchema
-});
+const bodySchema = z
+    .object({
+        email: z.email('Invalid email address').trim(),
+        name: z.string('Name must be a string').trim().nonempty('Name is required'),
+        surname: z.string('Surname must be a string').trim().nonempty('Surname is required'),
+        password: passwordSchema,
+        confirmPassword: passwordSchema
+    })
+    .strict();
 
 const userBodySchema = z.object({
     body: bodySchema

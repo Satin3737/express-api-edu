@@ -4,8 +4,9 @@ import {z} from 'zod';
 import type {IJwtPayload} from '@/interfaces';
 import {JwtSecret} from '@/const';
 import {jwtSchema} from '@/schemas';
+import {User} from '@/models';
 
-const isAuth: RequestHandler = (req, res, next) => {
+const isAuth: RequestHandler = async (req, res, next) => {
     try {
         const token = req.get('Authorization')?.replace('Bearer ', '');
         const {success, data, error} = jwtSchema.safeParse({token});
@@ -20,7 +21,12 @@ const isAuth: RequestHandler = (req, res, next) => {
         try {
             const decodedToken = jwt.verify(data.token, JwtSecret);
             if (!decodedToken) return res.status(401).json({message: 'Unauthorized'});
-            req.userId = (decodedToken as IJwtPayload).userId;
+
+            const userId = (decodedToken as IJwtPayload).userId;
+            const userExists = await User.findById(userId, {_id: true}).lean();
+            if (!userExists) return res.status(401).json({message: 'Unauthorized'});
+
+            req.userId = userId;
             next();
         } catch (error: unknown) {
             return res.status(401).json({message: 'Unauthorized', error});

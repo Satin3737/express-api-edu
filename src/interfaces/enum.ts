@@ -3,6 +3,7 @@ import type {IValueOf} from '@/interfaces';
 export const Routes = {
     register: '/auth/register',
     login: '/auth/login',
+    users: '/users',
     user: '/user',
     posts: '/posts',
     post: '/post',

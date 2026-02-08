@@ -3,7 +3,7 @@ import express from 'express';
 import pinoHttp from 'pino-http';
 import {connectToMongoServer} from '@/database/db';
 import {ImagesDir, ImagesStorageDir, Port} from '@/const';
-import {Logger} from '@/services';
+import {Logger, Socket} from '@/services';
 import {authRouter, notFoundRouter, postImagesRouter, postsRouter, userRouter} from '@/routes';
 import {bodyToLarge, isAuth} from '@/middlewares';
 
@@ -28,7 +28,8 @@ app.use('/api/v1', isAuth, routes);
 
 try {
     await connectToMongoServer();
-    app.listen(Port, () => Logger.info(`Server running on http://localhost:${Port}`));
+    const server = app.listen(Port, () => Logger.info(`Server running on http://localhost:${Port}`));
+    Socket.init(server);
 } catch (error) {
     Logger.error(error, 'Failed to start server');
     process.exit(1);

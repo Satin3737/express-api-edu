@@ -12,7 +12,21 @@ export const Routes = {
     postImageById: '/post-image/:id'
 } as const;
 
-export type IRoute = IValueOf<typeof Routes>;
+export type IRoutes = IValueOf<typeof Routes>;
+
+export const SocketNamespaces = {
+    posts: '/posts'
+} as const;
+
+export type ISocketNamespaces = IValueOf<typeof SocketNamespaces>;
+
+export const SocketEvents = {
+    postAdded: 'postAdded',
+    postUpdated: 'postUpdated',
+    postDeleted: 'postDeleted'
+} as const;
+
+export type ISocketEvents = IValueOf<typeof SocketEvents>;
 
 export const Models = {
     user: 'User',

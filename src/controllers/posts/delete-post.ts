@@ -1,6 +1,7 @@
 import type {RequestHandler} from 'express';
+import {SocketEvents} from '@/interfaces';
 import {deleteFile, getImagePath} from '@/utils';
-import {Logger} from '@/services';
+import {Logger, Socket} from '@/services';
 import type {IIdParams} from '@/schemas';
 import {Post, User} from '@/models';
 
@@ -15,6 +16,8 @@ const deletePost: RequestHandler<IIdParams['params']> = async (req, res) => {
         await Post.findByIdAndDelete(id);
         await User.findByIdAndUpdate(post.author, {$pull: {posts: post._id}});
         await deleteFile(getImagePath(post.image));
+
+        Socket.ioPosts.emit(SocketEvents.postDeleted, post._id);
 
         return res.status(200).json({message: 'Post deleted successfully'});
     } catch (error) {

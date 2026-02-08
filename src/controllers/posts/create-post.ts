@@ -1,5 +1,6 @@
 import type {RequestHandler} from 'express';
-import {Logger} from '@/services';
+import {SocketEvents} from '@/interfaces';
+import {Logger, Socket} from '@/services';
 import type {ICreatePost} from '@/schemas';
 import {Post, User} from '@/models';
 
@@ -15,6 +16,8 @@ const createPost: RequestHandler<unknown, unknown, ICreatePost['body']> = async 
 
         await user.save();
         await post.save();
+
+        Socket.ioPosts.emit(SocketEvents.postAdded, post);
 
         return res.status(201).json({message: 'Post created successfully', post});
     } catch (error) {

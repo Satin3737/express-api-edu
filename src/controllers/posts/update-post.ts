@@ -1,6 +1,7 @@
 import type {RequestHandler} from 'express';
+import {SocketEvents} from '@/interfaces';
 import {deleteFile, getImagePath} from '@/utils';
-import {Logger} from '@/services';
+import {Logger, Socket} from '@/services';
 import type {IUpdatePost} from '@/schemas';
 import {type IPost, Post} from '@/models';
 
@@ -29,6 +30,8 @@ const updatePost: RequestHandler<IUpdatePost['params'], unknown, IUpdatePost['bo
             if (!updatedPost) return res.status(404).json({message: 'Post not found'});
             post = updatedPost;
         }
+
+        Socket.ioPosts.emit(SocketEvents.postUpdated, post);
 
         return res.status(200).json({message: 'Post updated successfully', post});
     } catch (error) {

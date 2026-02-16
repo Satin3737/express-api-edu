@@ -1,7 +1,4 @@
-import dotenv from 'dotenv';
 import esbuild from 'esbuild';
-
-dotenv.config();
 
 esbuild
     .build({
@@ -12,9 +9,6 @@ esbuild
         packages: 'external',
         format: 'esm',
         platform: 'node',
-        outdir: 'dist',
-        define: Object.fromEntries(
-            Object.entries(process.env).map(([key, value]) => [`process.env.${key}`, JSON.stringify(value)])
-        )
+        outdir: 'dist'
     })
     .catch(() => process.exit(1));

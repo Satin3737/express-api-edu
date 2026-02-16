@@ -21,5 +21,10 @@ export const PaginationLimitDefault = 10;
 export const PaginationLimitMax = 100;
 
 export const bcryptSalt = 12;
-export const JwtSecret = process.env.JWT_SECRET || 'secret';
+
+if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET environment variable is required');
+}
+
+export const JwtSecret = process.env.JWT_SECRET;
 export const JwtExpiresIn = Number(process.env.JWT_EXPIRES_IN) || 60 * 1000;

@@ -12,7 +12,8 @@ services:
         environment:
             - PROD_PREVIEW=${PROD_PREVIEW}
         depends_on:
-            - express-api-edu-mongodb
+            express-api-edu-mongodb:
+                condition: service_healthy
 
     express-api-edu-mongodb:
         image: mongo:latest
@@ -24,6 +25,12 @@ services:
         networks:
             - app-network
         command: --quiet --logappend --logpath "/logs/mongo.log"
+        healthcheck:
+            test: mongosh --quiet --eval "db.runCommand('ping').ok"
+            interval: 5s
+            timeout: 5s
+            retries: 5
+            start_period: 5s
 
 volumes:
     mongo-volume:

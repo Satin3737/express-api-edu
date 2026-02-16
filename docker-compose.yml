@@ -24,6 +24,9 @@ services:
             - ./logs:/logs
         networks:
             - app-network
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+            - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
         command: --quiet --logappend --logpath "/logs/mongo.log"
         healthcheck:
             test: mongosh --quiet --eval "db.runCommand('ping').ok"

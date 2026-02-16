@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import {z} from 'zod';
 import type {IJwtPayload} from '@/interfaces';
 import {JwtSecret} from '@/const';
+import {Logger} from '@/services';
 import {jwtSchema} from '@/schemas';
 import {User} from '@/models';
 
@@ -29,10 +30,12 @@ const isAuth: RequestHandler = async (req, res, next) => {
             req.userId = userId;
             next();
         } catch (error: unknown) {
-            return res.status(401).json({message: 'Unauthorized', error});
+            Logger.error(error, 'JWT verification failed');
+            return res.status(401).json({message: 'Unauthorized'});
         }
     } catch (error: unknown) {
-        return res.status(500).json({message: 'Internal Server Error', error});
+        Logger.error(error, 'Auth middleware error');
+        return res.status(500).json({message: 'Internal Server Error'});
     }
 };
 

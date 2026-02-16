@@ -1,15 +1,7 @@
 import type {RequestHandler} from 'express';
-import {Logger} from '@/services';
 
-const notFound: RequestHandler = async (_, res) => {
-    try {
-        return res.status(404).json({
-            message: 'Resource not found'
-        });
-    } catch (error) {
-        Logger.error(error, 'Error handling not found');
-        return res.status(500).json({message: 'Internal Server Error', error});
-    }
+const notFound: RequestHandler = (_, res) => {
+    return res.status(404).json({message: 'Resource not found'});
 };
 
 export default notFound;

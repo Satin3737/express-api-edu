@@ -9,9 +9,12 @@ export const StorageDir = 'storage';
 export const ImagesDir = 'images';
 export const ImagesStorageDir = `${StorageDir}/${ImagesDir}`;
 
+export const IsDev = process.env.NODE_ENV !== 'production';
+
 export const Port = Number(process.env.PORT) || 3000;
 export const BaseUrl = process.env.BASE_URL || 'http://localhost';
 export const BaseUrlWithPort = `${BaseUrl}:${Port}`;
+export const CorsOrigin = process.env.CORS_ORIGIN || 'http://localhost:3000';
 
 export const MaxUploadSize = 5 * 1024 * 1024;
 export const MaxBodySize = 1024 * 1024 + MaxUploadSize;

@@ -5,9 +5,9 @@ const __filename = fileURLToPath(import.meta.url);
 
 export const SrcDir = path.dirname(__filename);
 export const RootDir = path.join(SrcDir, '..');
-export const StorageDir = 'storage';
+export const StorageDir = path.join(RootDir, 'storage');
 export const ImagesDir = 'images';
-export const ImagesStorageDir = `${StorageDir}/${ImagesDir}`;
+export const ImagesStorageDir = path.join(StorageDir, ImagesDir);
 
 export const IsDev = process.env.NODE_ENV !== 'production';
 

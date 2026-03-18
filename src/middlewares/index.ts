@@ -1,4 +1,5 @@
 export {default as bodyToLarge} from './bodyToLarge';
+export {default as cleanupUpload} from './cleanupUpload';
 export {default as errorHandler} from './errorHandler';
 export {default as fileUpload} from './fileUpload';
 export {default as isAuth} from './isAuth';

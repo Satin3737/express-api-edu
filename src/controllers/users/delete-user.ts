@@ -1,3 +1,5 @@
+import {SocketEvents} from '@/interfaces';
+import {Socket} from '@/services';
 import {Post, User} from '@/models';
 import {asyncHandler, deleteFile, getImagePath} from '@/utils';
 
@@ -14,6 +16,10 @@ const deleteUser = asyncHandler(async (req, res) => {
     }
 
     await Post.deleteMany({_id: {$in: user.posts}});
+
+    for (const post of posts) {
+        Socket.ioPosts.emit(SocketEvents.postDeleted, post._id);
+    }
     await user.deleteOne();
 
     return res.status(200).json({message: 'User deleted successfully'});

@@ -1,4 +1,4 @@
-import {connectToMongoServer, disconnectFromMongoServer} from '@/database/db';
+import {connectToMongoServer} from '@/database/db';
 import {Logger} from '@/services';
 import {Post} from '@/models';
 
@@ -13,8 +13,6 @@ export async function up(): Promise<void> {
     } catch (err) {
         Logger.error(err, 'Migration failed');
         throw err;
-    } finally {
-        await disconnectFromMongoServer();
     }
 }
 
@@ -29,7 +27,5 @@ export async function down(): Promise<void> {
     } catch (err) {
         Logger.error(err, 'Rollback failed');
         throw err;
-    } finally {
-        await disconnectFromMongoServer();
     }
 }

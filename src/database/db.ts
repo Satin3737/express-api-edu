@@ -23,13 +23,3 @@ export const connectToMongoServer = async () => {
         throw error;
     }
 };
-
-export const disconnectFromMongoServer = async () => {
-    try {
-        Logger.info('Disconnecting from MongoDB...');
-        await mongoose.disconnect();
-    } catch (error) {
-        Logger.error(error, 'Error disconnecting from MongoDB');
-        throw error;
-    }
-};

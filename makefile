@@ -7,4 +7,4 @@ exec:
 	docker compose exec -it express-api-edu-backend /bin/bash
 
 clear:
-	docker compose down --rmi all
+	docker compose down -v

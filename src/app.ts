@@ -1,10 +1,11 @@
 import cors from 'cors';
+import crypto from 'crypto';
 import express from 'express';
 import pinoHttp from 'pino-http';
 import {connectToMongoServer} from '@/database/db';
 import {CorsOrigin, ImagesDir, ImagesStorageDir, Port} from '@/const';
 import {Logger, Socket} from '@/services';
-import {authRouter, notFoundRouter, postImagesRouter, postsRouter, userRouter} from '@/routes';
+import {authRouter, healthRouter, notFoundRouter, postImagesRouter, postsRouter, userRouter} from '@/routes';
 import {authLimiter, bodyToLarge, errorHandler, isAuth} from '@/middlewares';
 
 const app = express();
@@ -15,7 +16,7 @@ const middlewares = [
     cors({origin: CorsOrigin}),
     express.urlencoded({extended: true}),
     express.json(),
-    pinoHttp({logger: Logger.instance, autoLogging: false}),
+    pinoHttp({logger: Logger.instance, autoLogging: false, genReqId: () => crypto.randomUUID()}),
     bodyToLarge
 ];
 
@@ -23,6 +24,7 @@ const routes = [userRouter, postsRouter, postImagesRouter, notFoundRouter];
 
 app.use(middlewares);
 app.use(`/${ImagesDir}`, express.static(ImagesStorageDir));
+app.use('/api/v1', healthRouter);
 app.use('/api/v1', authLimiter, authRouter);
 app.use('/api/v1', isAuth, routes);
 app.use(errorHandler);

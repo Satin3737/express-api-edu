@@ -1,11 +1,13 @@
 #!/bin/sh
 
-npm install
-npm run migrate
+corepack enable
+
+pnpm install
+pnpm migrate
 
 if [ "$PROD_PREVIEW" = 1 ]; then
-  npm run build
-  npm run start
+  pnpm build
+  pnpm start
 else
-  npm run dev
+  pnpm dev
 fi

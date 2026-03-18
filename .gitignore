@@ -1,6 +1,7 @@
 .env
 .idea
 node_modules
+.pnpm-store
 dist
 logs
 storage

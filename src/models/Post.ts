@@ -21,6 +21,9 @@ const postSchema = new Schema<IPost>(
     }
 );
 
+postSchema.index({author: 1});
+postSchema.index({createdAt: -1});
+
 const Post = model<IPost>(Models.post, postSchema);
 
 export default Post;
